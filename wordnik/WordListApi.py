@@ -45,7 +45,9 @@ class WordListApi(object):
         params = locals()
         for (key, val) in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method updateWordList" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method updateWordList"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -62,7 +64,7 @@ class WordListApi(object):
             replacement = str(self.apiClient.toPathValue(params['permalink']))
             resourcePath = resourcePath.replace('{' + 'permalink' + '}',
                                                 replacement)
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
@@ -84,7 +86,9 @@ class WordListApi(object):
         params = locals()
         for (key, val) in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method deleteWordList" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method deleteWordList"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -101,7 +105,7 @@ class WordListApi(object):
             replacement = str(self.apiClient.toPathValue(params['permalink']))
             resourcePath = resourcePath.replace('{' + 'permalink' + '}',
                                                 replacement)
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
@@ -121,9 +125,11 @@ class WordListApi(object):
         allParams = ['permalink', 'auth_token']
 
         params = locals()
-        for (key, val) in params['kwargs'].items():
+        for key, val in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method getWordListByPermalink" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method getWordListByPermalink"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -140,16 +146,12 @@ class WordListApi(object):
             replacement = str(self.apiClient.toPathValue(params['permalink']))
             resourcePath = resourcePath.replace('{' + 'permalink' + '}',
                                                 replacement)
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
 
-        if not response:
-            return None
-
-        responseObject = self.apiClient.deserialize(response, 'WordList')
-        return responseObject
+        return self.apiClient.deserialize(response, 'WordList') if response else None
         
         
     def addWordsToWordList(self, permalink, auth_token, **kwargs):
@@ -168,7 +170,9 @@ class WordListApi(object):
         params = locals()
         for (key, val) in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method addWordsToWordList" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method addWordsToWordList"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -185,7 +189,7 @@ class WordListApi(object):
             replacement = str(self.apiClient.toPathValue(params['permalink']))
             resourcePath = resourcePath.replace('{' + 'permalink' + '}',
                                                 replacement)
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
@@ -209,9 +213,11 @@ class WordListApi(object):
         allParams = ['permalink', 'auth_token', 'sortBy', 'sortOrder', 'skip', 'limit']
 
         params = locals()
-        for (key, val) in params['kwargs'].items():
+        for key, val in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method getWordListWords" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method getWordListWords"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -236,16 +242,16 @@ class WordListApi(object):
             replacement = str(self.apiClient.toPathValue(params['permalink']))
             resourcePath = resourcePath.replace('{' + 'permalink' + '}',
                                                 replacement)
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
 
-        if not response:
-            return None
-
-        responseObject = self.apiClient.deserialize(response, 'list[WordListWord]')
-        return responseObject
+        return (
+            self.apiClient.deserialize(response, 'list[WordListWord]')
+            if response
+            else None
+        )
         
         
     def deleteWordsFromWordList(self, permalink, auth_token, **kwargs):
@@ -264,7 +270,9 @@ class WordListApi(object):
         params = locals()
         for (key, val) in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method deleteWordsFromWordList" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method deleteWordsFromWordList"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -281,7 +289,7 @@ class WordListApi(object):
             replacement = str(self.apiClient.toPathValue(params['permalink']))
             resourcePath = resourcePath.replace('{' + 'permalink' + '}',
                                                 replacement)
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)

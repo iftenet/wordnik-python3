@@ -44,7 +44,7 @@ class WordListApiTest(BaseApiTest):
 
     def testUpdateWordList(self):
         import time
-        description = 'list updated at ' + str(time.time())
+        description = f'list updated at {str(time.time())}'
         self.existingList.description = description
         self.wordListApi.updateWordList(self.existingList.permalink,
                                         self.authToken, body=self.existingList)
@@ -57,10 +57,9 @@ class WordListApiTest(BaseApiTest):
     def testAddWordsToWordList(self):
 
         from wordnik.models import StringValue
-        wordsToAdd = []
         word1 = StringValue.StringValue()
         word1.word = "delicious"
-        wordsToAdd.append(word1)
+        wordsToAdd = [word1]
         word2 = StringValue.StringValue()
         word2.word = "tasty"
         wordsToAdd.append(word2)
@@ -72,16 +71,15 @@ class WordListApiTest(BaseApiTest):
 
         res = self.wordListApi.getWordListWords(self.existingList.permalink,
                                                 self.authToken)
-        listSet = set([word.word for word in res])
-        addedSet = set(["delicious", "tasty", "scrumptious"])
+        listSet = {word.word for word in res}
+        addedSet = {"delicious", "tasty", "scrumptious"}
         assert len(listSet.intersection(addedSet)) == 3, 'did not get added words'
 
     def testDeleteWordsFromList(self):
         from wordnik.models import StringValue
-        wordsToRemove = []
         word1 = StringValue.StringValue()
         word1.word = "delicious"
-        wordsToRemove.append(word1)
+        wordsToRemove = [word1]
         word2 = StringValue.StringValue()
         word2.word = "tasty"
         wordsToRemove.append(word2)
@@ -94,9 +92,9 @@ class WordListApiTest(BaseApiTest):
 
         res = self.wordListApi.getWordListWords(self.existingList.permalink,
                                                 self.authToken)
-        listSet = set([word.word for word in res])
-        addedSet = set(["delicious", "tasty", "scrumptious"])
-        assert len(listSet.intersection(addedSet)) == 0, 'did not get removed words'
+        listSet = {word.word for word in res}
+        addedSet = {"delicious", "tasty", "scrumptious"}
+        assert not listSet.intersection(addedSet), 'did not get removed words'
 
 
 if __name__ == "__main__":

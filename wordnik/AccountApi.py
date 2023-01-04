@@ -42,9 +42,11 @@ class AccountApi(object):
         allParams = ['username', 'password']
 
         params = locals()
-        for (key, val) in params['kwargs'].items():
+        for key, val in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method authenticate" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method authenticate"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -61,16 +63,16 @@ class AccountApi(object):
             replacement = str(self.apiClient.toPathValue(params['username']))
             resourcePath = resourcePath.replace('{' + 'username' + '}',
                                                 replacement)
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
 
-        if not response:
-            return None
-
-        responseObject = self.apiClient.deserialize(response, 'AuthenticationToken')
-        return responseObject
+        return (
+            self.apiClient.deserialize(response, 'AuthenticationToken')
+            if response
+            else None
+        )
         
         
     def authenticatePost(self, username, body, **kwargs):
@@ -86,9 +88,11 @@ class AccountApi(object):
         allParams = ['username', 'body']
 
         params = locals()
-        for (key, val) in params['kwargs'].items():
+        for key, val in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method authenticatePost" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method authenticatePost"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -103,16 +107,16 @@ class AccountApi(object):
             replacement = str(self.apiClient.toPathValue(params['username']))
             resourcePath = resourcePath.replace('{' + 'username' + '}',
                                                 replacement)
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
 
-        if not response:
-            return None
-
-        responseObject = self.apiClient.deserialize(response, 'AuthenticationToken')
-        return responseObject
+        return (
+            self.apiClient.deserialize(response, 'AuthenticationToken')
+            if response
+            else None
+        )
         
         
     def getWordListsForLoggedInUser(self, auth_token, **kwargs):
@@ -129,9 +133,11 @@ class AccountApi(object):
         allParams = ['auth_token', 'skip', 'limit']
 
         params = locals()
-        for (key, val) in params['kwargs'].items():
+        for key, val in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method getWordListsForLoggedInUser" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method getWordListsForLoggedInUser"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -148,16 +154,16 @@ class AccountApi(object):
             queryParams['limit'] = self.apiClient.toPathValue(params['limit'])
         if ('auth_token' in params):
             headerParams['auth_token'] = params['auth_token']
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
 
-        if not response:
-            return None
-
-        responseObject = self.apiClient.deserialize(response, 'list[WordList]')
-        return responseObject
+        return (
+            self.apiClient.deserialize(response, 'list[WordList]')
+            if response
+            else None
+        )
         
         
     def getApiTokenStatus(self, **kwargs):
@@ -172,9 +178,11 @@ class AccountApi(object):
         allParams = ['api_key']
 
         params = locals()
-        for (key, val) in params['kwargs'].items():
+        for key, val in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method getApiTokenStatus" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method getApiTokenStatus"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -187,16 +195,16 @@ class AccountApi(object):
 
         if ('api_key' in params):
             headerParams['api_key'] = params['api_key']
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
 
-        if not response:
-            return None
-
-        responseObject = self.apiClient.deserialize(response, 'ApiTokenStatus')
-        return responseObject
+        return (
+            self.apiClient.deserialize(response, 'ApiTokenStatus')
+            if response
+            else None
+        )
         
         
     def getLoggedInUser(self, auth_token, **kwargs):
@@ -211,9 +219,11 @@ class AccountApi(object):
         allParams = ['auth_token']
 
         params = locals()
-        for (key, val) in params['kwargs'].items():
+        for key, val in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method getLoggedInUser" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method getLoggedInUser"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -226,16 +236,12 @@ class AccountApi(object):
 
         if ('auth_token' in params):
             headerParams['auth_token'] = params['auth_token']
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
 
-        if not response:
-            return None
-
-        responseObject = self.apiClient.deserialize(response, 'User')
-        return responseObject
+        return self.apiClient.deserialize(response, 'User') if response else None
         
         
     

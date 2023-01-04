@@ -52,9 +52,11 @@ class WordsApi(object):
         allParams = ['query', 'includePartOfSpeech', 'excludePartOfSpeech', 'caseSensitive', 'minCorpusCount', 'maxCorpusCount', 'minDictionaryCount', 'maxDictionaryCount', 'minLength', 'maxLength', 'skip', 'limit']
 
         params = locals()
-        for (key, val) in params['kwargs'].items():
+        for key, val in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method searchWords" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method searchWords"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -91,16 +93,16 @@ class WordsApi(object):
             replacement = str(self.apiClient.toPathValue(params['query']))
             resourcePath = resourcePath.replace('{' + 'query' + '}',
                                                 replacement)
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
 
-        if not response:
-            return None
-
-        responseObject = self.apiClient.deserialize(response, 'WordSearchResults')
-        return responseObject
+        return (
+            self.apiClient.deserialize(response, 'WordSearchResults')
+            if response
+            else None
+        )
         
         
     def getWordOfTheDay(self, **kwargs):
@@ -115,9 +117,11 @@ class WordsApi(object):
         allParams = ['date']
 
         params = locals()
-        for (key, val) in params['kwargs'].items():
+        for key, val in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method getWordOfTheDay" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method getWordOfTheDay"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -130,16 +134,16 @@ class WordsApi(object):
 
         if ('date' in params):
             queryParams['date'] = self.apiClient.toPathValue(params['date'])
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
 
-        if not response:
-            return None
-
-        responseObject = self.apiClient.deserialize(response, 'WordOfTheDay')
-        return responseObject
+        return (
+            self.apiClient.deserialize(response, 'WordOfTheDay')
+            if response
+            else None
+        )
         
         
     def reverseDictionary(self, query, **kwargs):
@@ -169,9 +173,11 @@ class WordsApi(object):
         allParams = ['query', 'findSenseForWord', 'includeSourceDictionaries', 'excludeSourceDictionaries', 'includePartOfSpeech', 'excludePartOfSpeech', 'expandTerms', 'sortBy', 'sortOrder', 'minCorpusCount', 'maxCorpusCount', 'minLength', 'maxLength', 'includeTags', 'skip', 'limit']
 
         params = locals()
-        for (key, val) in params['kwargs'].items():
+        for key, val in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method reverseDictionary" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method reverseDictionary"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -214,16 +220,16 @@ class WordsApi(object):
             queryParams['skip'] = self.apiClient.toPathValue(params['skip'])
         if ('limit' in params):
             queryParams['limit'] = self.apiClient.toPathValue(params['limit'])
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
 
-        if not response:
-            return None
-
-        responseObject = self.apiClient.deserialize(response, 'DefinitionSearchResults')
-        return responseObject
+        return (
+            self.apiClient.deserialize(response, 'DefinitionSearchResults')
+            if response
+            else None
+        )
         
         
     def getRandomWords(self, **kwargs):
@@ -249,9 +255,11 @@ class WordsApi(object):
         allParams = ['includePartOfSpeech', 'excludePartOfSpeech', 'sortBy', 'sortOrder', 'hasDictionaryDef', 'minCorpusCount', 'maxCorpusCount', 'minDictionaryCount', 'maxDictionaryCount', 'minLength', 'maxLength', 'limit']
 
         params = locals()
-        for (key, val) in params['kwargs'].items():
+        for key, val in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method getRandomWords" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method getRandomWords"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -286,16 +294,16 @@ class WordsApi(object):
             queryParams['sortOrder'] = self.apiClient.toPathValue(params['sortOrder'])
         if ('limit' in params):
             queryParams['limit'] = self.apiClient.toPathValue(params['limit'])
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
 
-        if not response:
-            return None
-
-        responseObject = self.apiClient.deserialize(response, 'list[WordObject]')
-        return responseObject
+        return (
+            self.apiClient.deserialize(response, 'list[WordObject]')
+            if response
+            else None
+        )
         
         
     def getRandomWord(self, **kwargs):
@@ -318,9 +326,11 @@ class WordsApi(object):
         allParams = ['includePartOfSpeech', 'excludePartOfSpeech', 'hasDictionaryDef', 'minCorpusCount', 'maxCorpusCount', 'minDictionaryCount', 'maxDictionaryCount', 'minLength', 'maxLength']
 
         params = locals()
-        for (key, val) in params['kwargs'].items():
+        for key, val in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method getRandomWord" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method getRandomWord"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -349,16 +359,12 @@ class WordsApi(object):
             queryParams['minLength'] = self.apiClient.toPathValue(params['minLength'])
         if ('maxLength' in params):
             queryParams['maxLength'] = self.apiClient.toPathValue(params['maxLength'])
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
 
-        if not response:
-            return None
-
-        responseObject = self.apiClient.deserialize(response, 'WordObject')
-        return responseObject
+        return self.apiClient.deserialize(response, 'WordObject') if response else None
         
         
     

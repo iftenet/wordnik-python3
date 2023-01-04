@@ -42,9 +42,11 @@ class WordListsApi(object):
         allParams = ['body', 'auth_token']
 
         params = locals()
-        for (key, val) in params['kwargs'].items():
+        for key, val in params['kwargs'].items():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method createWordList" % key)
+                raise TypeError(
+                    f"Got an unexpected keyword argument '{key}' to method createWordList"
+                )
             params[key] = val
         del params['kwargs']
 
@@ -57,16 +59,12 @@ class WordListsApi(object):
 
         if ('auth_token' in params):
             headerParams['auth_token'] = params['auth_token']
-        postData = (params['body'] if 'body' in params else None)
+        postData = params.get('body')
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams)
 
-        if not response:
-            return None
-
-        responseObject = self.apiClient.deserialize(response, 'WordList')
-        return responseObject
+        return self.apiClient.deserialize(response, 'WordList') if response else None
         
         
     

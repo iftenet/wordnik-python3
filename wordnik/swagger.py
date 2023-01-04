@@ -19,7 +19,7 @@ class ApiClient:
     """Generic API client for Swagger client library builds"""
 
     def __init__(self, apiKey=None, apiServer=None):
-        if apiKey == None:
+        if apiKey is None:
             raise Exception('You must pass an apiKey when instantiating the '
                             'APIClient')
         self.apiKey = apiKey
@@ -46,12 +46,12 @@ class ApiClient:
         if method == 'GET':
 
             if queryParams:
-                # Need to remove None values, these should not be sent
-                sentQueryParams = {}
-                for param, value in queryParams.items():
-                    if value != None:
-                        sentQueryParams[param] = value
-                url = url + '?' + urllib.parse.urlencode(sentQueryParams)
+                sentQueryParams = {
+                    param: value
+                    for param, value in queryParams.items()
+                    if value != None
+                }
+                url = f'{url}?{urllib.parse.urlencode(sentQueryParams)}'
 
         elif method in ['POST', 'PUT', 'DELETE']:
 
@@ -61,7 +61,7 @@ class ApiClient:
                 data = json.dumps(data)
 
         else:
-            raise Exception('Method ' + method + ' is not recognized.')
+            raise Exception(f'Method {method} is not recognized.')
 
         if data:
             data = data.encode('utf-8')
@@ -107,10 +107,7 @@ class ApiClient:
         elif type(obj) == datetime.datetime:
             return obj.isoformat()
         else:
-            if type(obj) == dict:
-                objDict = obj
-            else:
-                objDict = obj.__dict__
+            objDict = obj if type(obj) == dict else obj.__dict__
             return {key: self.sanitizeForSerialization(val)
                     for (key, val) in objDict.items()
                     if key != 'swaggerTypes'}
@@ -130,13 +127,13 @@ class ApiClient:
         if type(objClass) == str:
             if 'list[' in objClass:
                 match = re.match('list\[(.*)\]', objClass)
-                subClass = match.group(1)
+                subClass = match[1]
                 return [self.deserialize(subObj, subClass) for subObj in obj]
 
             if (objClass in ['int', 'float', 'dict', 'list', 'str', 'bool', 'datetime']):
                 objClass = eval(objClass)
             else:  # not a native type, must be model class
-                objClass = eval(objClass + '.' + objClass)
+                objClass = eval(f'{objClass}.{objClass}')
 
         if objClass in [int, float, dict, list, str, bool]:
             return objClass(obj)
@@ -165,14 +162,15 @@ class ApiClient:
                                               "%Y-%m-%dT%H:%M:%S.%f"))
                 elif 'list[' in attrType:
                     match = re.match('list\[(.*)\]', attrType)
-                    subClass = match.group(1)
+                    subClass = match[1]
                     subValues = []
                     if not value:
                         setattr(instance, attr, None)
                     else:
-                        for subValue in value:
-                            subValues.append(self.deserialize(subValue,
-                                                              subClass))
+                        subValues.extend(
+                            self.deserialize(subValue, subClass)
+                            for subValue in value
+                        )
                     setattr(instance, attr, subValues)
                 else:
                     setattr(instance, attr, self.deserialize(value,
